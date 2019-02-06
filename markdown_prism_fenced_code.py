@@ -6,7 +6,7 @@ This extension adds Fenced Code Blocks to Python-Markdown.
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from markdown import Extension
+from markdown.extensions import Extension
 from markdown.preprocessors import Preprocessor
 from copy import copy
 import re

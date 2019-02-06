@@ -7,7 +7,7 @@ code highlighting
 """
 
 import sys
-from pelican import signals
+from pelican import signals, utils
 
 try:
     from .markdown_prism_fenced_code import PrismConfig, PrismFencedCodeExtension
@@ -55,7 +55,10 @@ def apply_markdown_extension(pelicanobj, config):
 
     # Instantiate Markdown extension and append it to the current extensions
     try:
-        pelicanobj.settings['MD_EXTENSIONS'].append(PrismFencedCodeExtension(config))
+        if isinstance(pelicanobj.settings.get('MD_EXTENSIONS'), list):  # pelican 3.6.3 and earlier
+            pelicanobj.settings['MD_EXTENSIONS'].append(PrismFencedCodeExtension(config))
+        else:
+            pelicanobj.settings['MARKDOWN'].setdefault('extensions', []).append(PrismFencedCodeExtension(config))
     except:
         sys.excepthook(*sys.exc_info())
         sys.stderr.write("\nError - md-prism-highlight failed to load\n")
